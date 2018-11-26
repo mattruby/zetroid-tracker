@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/zetroid-tracker/static/js/runtime~main.a68896f9.js"
   },
   {
-    "revision": "cea54c18cf3f71cb2eb7",
-    "url": "/zetroid-tracker/static/js/main.cea54c18.chunk.js"
+    "revision": "019a216cb0c81b4c930d",
+    "url": "/zetroid-tracker/static/js/main.019a216c.chunk.js"
   },
   {
     "revision": "6a22f9ef389d7780b104",
     "url": "/zetroid-tracker/static/js/1.6a22f9ef.chunk.js"
   },
   {
-    "revision": "cea54c18cf3f71cb2eb7",
-    "url": "/zetroid-tracker/static/css/main.117dc2c3.chunk.css"
+    "revision": "019a216cb0c81b4c930d",
+    "url": "/zetroid-tracker/static/css/main.89c80133.chunk.css"
   },
   {
-    "revision": "5cfc26ff93408d11245c2f590bcfea00",
+    "revision": "ba76699de677a3cde5970426676a5ea2",
     "url": "/zetroid-tracker/index.html"
   }
 ];
