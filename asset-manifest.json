@@ -1,13 +1,15 @@
 {
-  "main.css": "/zetroid-tracker/static/css/main.75319ab7.chunk.css",
-  "main.js": "/zetroid-tracker/static/js/main.64cb3d81.chunk.js",
-  "main.js.map": "/zetroid-tracker/static/js/main.64cb3d81.chunk.js.map",
-  "static/js/1.321eb4da.chunk.js": "/zetroid-tracker/static/js/1.321eb4da.chunk.js",
-  "static/js/1.321eb4da.chunk.js.map": "/zetroid-tracker/static/js/1.321eb4da.chunk.js.map",
+  "main.css": "/zetroid-tracker/static/css/main.8c2316b8.chunk.css",
+  "main.js": "/zetroid-tracker/static/js/main.9c4beefd.chunk.js",
+  "main.js.map": "/zetroid-tracker/static/js/main.9c4beefd.chunk.js.map",
+  "static/css/1.4c79f849.chunk.css": "/zetroid-tracker/static/css/1.4c79f849.chunk.css",
+  "static/js/1.c20ff296.chunk.js": "/zetroid-tracker/static/js/1.c20ff296.chunk.js",
+  "static/js/1.c20ff296.chunk.js.map": "/zetroid-tracker/static/js/1.c20ff296.chunk.js.map",
   "runtime~main.js": "/zetroid-tracker/static/js/runtime~main.a68896f9.js",
   "runtime~main.js.map": "/zetroid-tracker/static/js/runtime~main.a68896f9.js.map",
-  "static/css/main.75319ab7.chunk.css.map": "/zetroid-tracker/static/css/main.75319ab7.chunk.css.map",
+  "static/css/1.4c79f849.chunk.css.map": "/zetroid-tracker/static/css/1.4c79f849.chunk.css.map",
+  "static/css/main.8c2316b8.chunk.css.map": "/zetroid-tracker/static/css/main.8c2316b8.chunk.css.map",
   "index.html": "/zetroid-tracker/index.html",
-  "precache-manifest.9c53353babefe896b23b43aec55b0681.js": "/zetroid-tracker/precache-manifest.9c53353babefe896b23b43aec55b0681.js",
+  "precache-manifest.2e2541821da13954052f9b1c4a974b2e.js": "/zetroid-tracker/precache-manifest.2e2541821da13954052f9b1c4a974b2e.js",
   "service-worker.js": "/zetroid-tracker/service-worker.js"
 }
