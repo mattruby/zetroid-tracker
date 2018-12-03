@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/zetroid-tracker/precache-manifest.2500e2f73d84e49c93561d36b551693e.js"
+  "/zetroid-tracker/precache-manifest.dff85ba6572d870f54da894b988de782.js"
 );
 
 workbox.clientsClaim();
