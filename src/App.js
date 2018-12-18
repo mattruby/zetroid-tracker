@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import { observer, Provider } from 'mobx-react';
-import Map from 'Map';
-import NavBar from 'NavBar';
-import Modal from 'Modal';
-import FileImportModal from 'FileImportModal';
-import FileExportModal from 'FileExportModal';
-import HelpModal from 'HelpModal';
-import EditItemListModal from 'EditItemListModal';
-import { randomId } from './util';
+import Map from 'components/Map';
+import NavBar from 'components/NavBar';
+import Modal from 'components/Modal';
+import FileImportModal from 'components/FileImportModal';
+import FileExportModal from 'components/FileExportModal';
+import HelpModal from 'components/HelpModal';
+import EditItemListModal from 'components/EditItemListModal';
+import ConfigModal from 'components/ConfigModal';
+import { randomId } from 'utilities/util';
 import { find, get } from 'lodash';
 import 'scss/App.scss';
-import LocationDetail from 'LocationDetail';
-import ItemList from 'ItemList';
-import Layout from 'Layout';
-import DungeonList from 'DungeonList';
+import LocationDetail from 'components/LocationDetail';
+import ItemList from 'components/ItemList';
+import Layout from 'components/Layout';
+import DungeonList from 'components/DungeonList';
+import 'inobounce';
 
 class App extends Component {
 
@@ -65,9 +67,9 @@ class App extends Component {
 			let draggableEnabled;
 
 			switch (config.listType) {
-				case 'boss':
-					itemListStore = this.props.store.activeBossItemList;
-					items = this.props.store.activeBossItemList.bosses;
+				case 'dungeon':
+					itemListStore = this.props.store.activeDungeonItemList;
+					items = this.props.store.activeDungeonItemList.bosses;
 					return (
 						<DungeonList
 							itemListStore={itemListStore}
@@ -109,6 +111,9 @@ class App extends Component {
 				case 'EDIT_ITEM_LIST':
 					modal = <EditItemListModal />;
 					break;
+				case 'CONFIG':
+					modal = <ConfigModal />;
+					break;
 				default:
 					break;
 			}
@@ -120,7 +125,7 @@ class App extends Component {
 					<Modal>
 						{modal}
 					</Modal>
-					<Layout factory={this.layoutFactory.bind(this)} />
+					<Layout layoutStore={store.layout} factory={this.layoutFactory.bind(this)} />
 					{/*<div id="main" className="main">
 						{this.generateMaps()}
 						<LocationDetail />

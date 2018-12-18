@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from 'App';
 import { unprotect, applySnapshot, getSnapshot, destroy, onSnapshot, detach, getParentOfType, getParent } from 'mobx-state-tree';
-import { randomId } from './util';
+import { randomId } from 'utilities/util';
 import AppStore from 'App.store';
 import MapStore from 'Map.store';
 import GameStore from 'Game.store';
@@ -14,42 +14,59 @@ import LocationStore from 'Location.store';
 import LocationDetailStore from 'LocationDetail.store';
 import ItemListStore from 'ItemList.store';
 import LayoutStore from 'Layout.store';
+import ConfigStore from 'Config.store';
+import AbilitiesStore from 'Abilities.store';
 import * as serviceWorker from 'serviceWorker';
-import { isUndefined, find, includes } from 'lodash';
+import { isUndefined, find, includes, isEmpty } from 'lodash';
 import { createStorage } from 'persistme';
 
+const shouldSync = true;
+const configStore = ConfigStore.create({
+	id: randomId(),
+});
 const activeItemListStore = ItemListStore.create({
 	id: randomId(),
 	items: [],
 	sortOrder: [],
 	droppableId: 'active-itemList-droppable',
+	config: configStore,
 });
 const inactiveItemListStore = ItemListStore.create({
 	id: randomId(),
 	items: [],
 	sortOrder: [],
 	droppableId: 'inactive-itemList-droppable',
+	config: configStore,
 });
-const activeBossItemListStore = ItemListStore.create({
+const activeDungeonItemListStore = ItemListStore.create({
 	id: randomId(),
 	items: [],
 	sortOrder: [],
 	droppableId: 'active-bossItemList-droppable',
+	config: configStore,
 });
-const inactiveBossItemListStore = ItemListStore.create({
+const inactiveDungeonItemListStore = ItemListStore.create({
 	id: randomId(),
 	items: [],
 	sortOrder: [],
 	droppableId: 'inactive-bossItemList-droppable',
+	config: configStore,
 });
 const appStore = AppStore.create({
 	id: randomId(),
+	version: 1,
+	configStore: configStore,
+	config: configStore,
+	abilities: AbilitiesStore.create({
+		id: randomId(),
+		config: configStore,
+	}),
 	games: {},
-	// shouldSync: false,
+	shouldSync,
 	activeItemList: activeItemListStore,
 	inactiveItemList: inactiveItemListStore,
-	activeBossItemList: activeBossItemListStore,
-	inactiveBossItemList: inactiveBossItemListStore,
+	activeDungeonItemList: activeDungeonItemListStore,
+	inactiveDungeonItemList: inactiveDungeonItemListStore,
 	maps: {},
 	locationDetail: LocationDetailStore.create({
 		id: randomId(),
@@ -106,6 +123,7 @@ const itemDataFactory = (item, index = 0) => {
 		type: item.type,
 		acquired: item.acquired,
 		imageEmpty: item.imageEmpty,
+		tier: item.tier || null,
 	}
 
 	if (isItemGroup) {
@@ -114,13 +132,16 @@ const itemDataFactory = (item, index = 0) => {
 		itemData.groupIndex = item.groupIndex || null;
 	} else {
 		itemData.longName = item.longName;
-		itemData.image = item.image
+		itemData.image = item.image;
+		itemData.autoAcquire = item.autoAcquire;
 	}
 
 	const subItemData = isItemGroup && item.items.map(data => {
 		return ItemStore.create(Object.assign({}, itemData, data, {
 			id: randomId(),
 			game: appStore.getGameByName(data.game),
+			autoAcquire: data.autoAcquire,
+			acquired: data.autoAcquire,
 		}));
 	});
 	if (subItemData.length) {
@@ -143,14 +164,14 @@ const gameBossData = bossData.filter(item => item.game === appStore.selectedGame
 gameBossData.concat(gameItemsData.filter(item => includes(item.type, 'dungeon-item'))).forEach((item, i) => {
 	const itemData = itemDataFactory(item, i);
 
-	appStore.activeBossItemList.sortOrder.push(i);
-	appStore.activeBossItemList.items.push(ItemStore.create(itemData));
+	appStore.activeDungeonItemList.sortOrder.push(i);
+	appStore.activeDungeonItemList.items.push(ItemStore.create(itemData));
 });
 // Create location models.
 locationsData.forEach(loc => {
 	const selectedMap = appStore.getMapByName(loc.map);
-	let bossId = loc.boss && find(appStore.activeBossItemList.items, { name: loc.boss });
-	let prizeId = find(appStore.activeBossItemList.items, { group: 'prize' });
+	let bossId = loc.boss && find(appStore.activeDungeonItemList.items, { name: loc.boss });
+	let prizeId = find(appStore.activeDungeonItemList.items, { group: 'prize' });
 	let chestItem = null;
 
 	if (loc.numChests) {
@@ -177,6 +198,7 @@ locationsData.forEach(loc => {
 		numChests: loc.numChests,
 		boss: bossId,
 		prize: prizeId,
+		map: selectedMap,
 	}));
 
 });
@@ -202,7 +224,7 @@ if (appStore.shouldSync) {
 	onSnapshot(appStore, model => {
 		appStore.updateGameTreeStorage(model);
 	});
-	if (gameStorage) {
+	if (!isEmpty(gameStorage)) {
 		applySnapshot(appStore, gameStorage);
 	}
 }

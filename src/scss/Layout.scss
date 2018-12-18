@@ -105,6 +105,7 @@
 .flexlayout__tab_button_leading {
 	float: left;
 	display: inline-block;
+	max-width: 15px;
 }
 
 .flexlayout__tab_button_content {
@@ -182,13 +183,13 @@
 }
 
 .flexlayout__tabset-selected {
-	background: $zeldaBlue;
-	font-weight: bold;
+	//background: $zeldaBlue;
+	//font-weight: bold;
 	//background-image: linear-gradient(#111, #444);
 }
 
 .flexlayout__tabset-maximized {
-	background: $zeldaBlue;
+	//background: $zeldaBlue;
 	//background-image: linear-gradient(#666, #333);
 }
 
@@ -312,10 +313,13 @@
 	vertical-align: top;
 	box-sizing: border-box;
 }
+.flexlayout__border_button_top {
+	margin-top: 4px;
+}
 
 .flexlayout__border_button--selected {
 	color: #ddd;
-	background-color: #222;
+	background-color: $zeldaBlue;
 }
 
 .flexlayout__border_button--unselected {

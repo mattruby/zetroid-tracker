@@ -3,9 +3,13 @@
 @import 'ItemList';
 @import 'Layout';
 @import 'LocationDetail';
+@import 'marker-cluster';
 
 html, body {
 	background: $grey-light;
+	height: 100%;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 }
 #root {
 	left: 0;
@@ -22,7 +26,7 @@ html, body {
 	flex-grow: 1;
 }
 .layout-container {
-	border-top: 7px solid #000;
+	//border-top: 7px solid #000;
 	position: relative;
 	flex-grow: 1;
 	top: 0;
@@ -45,7 +49,22 @@ button {
 	position: absolute;
 	z-index: -9999 !important;
 }
-
+.main-menu-button {
+	height: 100%;
+	border-radius: 0;
+}
+.navbar {
+	min-height: 56px;
+	&.is-menu-closed {
+		width: 0;
+		.is-hideable-navbar-item {
+			display: none;
+		}
+	}
+}
+.navbar-start {
+	margin-left: 20px;
+}
 .navbar-menu.is-active {
 	position: absolute;
 	width: 100%;
@@ -57,7 +76,7 @@ button {
 
 }
 .is-not-acquired {
-	opacity: 0.25;
+	opacity: 0.50;
 	filter: saturate(0);
 }
 .navbar-item .button { justify-content: left; }
@@ -118,7 +137,7 @@ button {
 	}
 }
 .map {
-	height: 100%
+	height: 100%;
 }
 
 .edit-item-list-modal {
@@ -130,4 +149,49 @@ button {
 	$stripe2: rgba(220,220,220,0.65);
 	background-image: linear-gradient(45deg, $stripe1 25%, $stripe2 25%, $stripe2 50%, $stripe1 50%, $stripe1 75%, $stripe2 75%, $stripe2 100%);
 	background-size: 56.57px 56.57px;
+}
+.splitter-size {
+	display: flex;
+	align-items: center;
+	p {
+		margin: 0 0 0 10px;
+	}
+}
+.map-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 40px 0 0;
+	border: 3px solid #fff;
+}
+.map-toolbar {
+	position: absolute;
+	z-index: 400;
+	top: 0;
+	left: 0;
+	background: #fff;
+	width: 100%;
+	height: 40px;
+	display: flex;
+	justify-content: space-between;
+	.field {
+		margin: 3px 5px;
+	}
+}
+.config-modal {
+	.field + .field {
+		border-top: 1px solid #ccc;
+		padding: 10px 0 0;
+		margin: 10px 0 0;
+	}
+}
+fieldset {
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+legend {
+	font-weight: bold;
+}
+label {
+	cursor: pointer;
 }

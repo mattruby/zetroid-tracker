@@ -1,7 +1,14 @@
 import { types } from 'mobx-state-tree';
 import { find, sortBy } from 'lodash';
+import ConfigStore from 'Config.store';
 
-const ItemListUtil = types.model()
+/**
+ * Utilities to assist in item retrieval targeted against the associated store's "items" property.
+ * @type {IModelType<ModelPropertiesDeclarationToProperties<{}>, {} & {getItemByName: getItemByName, getItemsByGroup: getItemsByGroup, bosses: *, getItemOrGroupByName: getItemOrGroupByName, sortedItems: *, hasAcquiredAnyItemsInGroup: (function(*=): *), groupedItems: *, isVisible: (function(*): boolean), getItemGroupByName: (function(*))}, _NotCustomized, _NotCustomized>}
+ */
+const ItemListUtil = types.model({
+		config: types.reference(ConfigStore),
+	})
 	.views(self => ({
 		// Returns the item group
 		getItemGroupByName: (group) => {

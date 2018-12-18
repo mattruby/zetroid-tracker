@@ -1,14 +1,13 @@
 import { types, getRoot } from 'mobx-state-tree';
-import { pick } from 'lodash';
+import { pick, isEmpty } from 'lodash';
 
 const LayoutStore = types
 	.model({
 		id: types.identifier,
-		splitterSize: 16,
 		enableEdgeDock: true,
 		tabEnableClose: true,
 		tabEnableDrag: true,
-		tabEnableRename: true,
+		tabEnableRename: false,
 		tabClassName: types.maybeNull(types.string),
 		tabIcon: types.maybeNull(types.string),
 		tabEnableRenderOnDemand: true,
@@ -26,8 +25,14 @@ const LayoutStore = types
 		borderBarSize: 40,
 		borderEnableDrop: true,
 		borderClassName: types.maybeNull(types.string),
+		showBorderTop: true,
+		showBorderRight: true,
+		showBorderBottom: true,
+		showBorderLeft: true,
 	})
 	.volatile(self => ({
+		// layoutModel: null,
+		// Actions: null,
 		layoutPresets: {
 			zelda3: {
 				current: {},
@@ -93,7 +98,7 @@ const LayoutStore = types
 											{
 												'type': 'tab',
 												'id': '#1',
-												'name': 'Location Details',
+												'name': 'Details',
 												'component': 'LocationDetail',
 												'config': {
 													'id': '1'
@@ -115,7 +120,7 @@ const LayoutStore = types
 								{
 									'type': 'tab',
 									'id': '#3',
-									'name': 'Item List',
+									'name': 'Items',
 									'component': 'ItemList',
 									'config': {
 
@@ -125,10 +130,10 @@ const LayoutStore = types
 								{
 									'type': 'tab',
 									'id': '#2',
-									'name': 'Boss List',
+									'name': 'Dungeons',
 									'component': 'ItemList',
 									'config': {
-										listType: 'boss'
+										listType: 'dungeon'
 									},
 									'enableClose': false
 								}
@@ -137,19 +142,29 @@ const LayoutStore = types
 						{
 							'type': 'border',
 							'location': 'right',
+							show: true,
 							'children': []
 						},
 						{
 							'type': 'border',
 							'location': 'bottom',
 							'children': []
-						}
+						},
+						{
+							'type': 'border',
+							'location': 'top',
+							show: false,
+							'children': []
+						},
 					]
 				}
 			}
 		}
 	}))
 	.views(self => ({
+		get splitterSize() {
+			return getRoot(self).configStore.splitterSize || 5;
+		},
 		get globalConfig() {
 			const attrs = [
 				'splitterSize',
@@ -183,12 +198,15 @@ const LayoutStore = types
 			const root = getRoot(self);
 
 			result = root.getGameStorage('layout');
-			if (!result) {
+			if (isEmpty(result)) {
 				result = self.layoutPresets[root.selectedGame.name].STANDARD;
 			}
 			result = self.normalize(result);
 			return result;
-		}
+		},
+		// getBorderVisibility: (borderId) => {
+		// 	return self.layoutModel.getNodeById(borderId)._attributes.show;
+		// }
 	}))
 	.actions(self => {
 		const saveToLocalStorage = data => {
@@ -200,10 +218,14 @@ const LayoutStore = types
 			json.global = globalConfig;
 			return json;
 		};
+		const toggleBorder = (borderName) => {
+			self[`showBorder${borderName}`] = !self[`showBorder${borderName}`];
+		};
 
 		return {
 			saveToLocalStorage,
 			normalize,
+			toggleBorder,
 		};
 	})
 ;

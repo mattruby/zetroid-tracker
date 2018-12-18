@@ -22,6 +22,8 @@ const ItemStore = types
 		qty: types.optional(types.integer, 0),
 		maxQty: types.optional(types.integer, 1),
 		isDefault: false,
+		tier: types.maybeNull(types.number),
+		autoAcquire: false,
 	})
 	.views(self => ({
 		get imageSrc() {
@@ -107,7 +109,11 @@ const ItemStore = types
 				}
 			}
 			const nextSubItem = subItems[nextGroupIndex];
-			nextSubItem.acquire(shouldAcquire);
+			if (nextSubItem.autoAcquire) {
+				nextSubItem.acquire(true);
+			} else {
+				nextSubItem.acquire(shouldAcquire);
+			}
 		};
 		const toggleAcquisition = () => {
 			self.acquire(!self.acquired);
